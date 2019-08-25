@@ -1,8 +1,8 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 const express = require('express');
 
 const app = express();
-const mongoose = require('mongoose');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
 
@@ -13,9 +13,16 @@ const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
 
 // Connect to DB
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
-  console.log('Connected to DB!');
-});
+mongoose.connect(
+  process.env.MONGO_REMOTE,
+  { useNewUrlParser: true, bufferCommands: false },
+  (err) => {
+    if (err) {
+      throw err;
+    }
+    console.log('Connected to DB!');
+  },
+);
 
 // Middlewares
 app.use(express.json());
